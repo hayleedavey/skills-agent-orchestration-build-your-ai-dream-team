@@ -1,0 +1,32 @@
+{
+  "projects": [
+    {
+      "name": "Mobile Checkout Revamp",
+      "owner": "Avery Patel",
+      "status": "On Track",
+      "recentActivity": "Completed payment gateway integration and started QA handoff.",
+      "priority": "High"
+    },
+    {
+      "name": "Customer Insights Dashboard",
+      "owner": "Jordan Kim",
+      "status": "At Risk",
+      "recentActivity": "Data pipeline latency increased after schema update; mitigation in progress.",
+      "priority": "Medium"
+    },
+    {
+      "name": "Release Automation",
+      "owner": "Taylor Nguyen",
+      "status": "Blocked",
+      "recentActivity": "Waiting on security sign-off for deployment credentials.",
+      "priority": "High"
+    },
+    {
+      "name": "Support Workflow Cleanup",
+      "owner": "Riley Morgan",
+      "status": "Off Track",
+      "recentActivity": "Backlog triage slipped this sprint; revised plan due tomorrow.",
+      "priority": "Low"
+    }
+  ]
+}

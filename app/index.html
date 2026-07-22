@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Pulse</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="dashboard" aria-labelledby="dashboard-title">
+      <header class="dashboard-header">
+        <h1 class="dashboard-title" id="dashboard-title">Project Pulse</h1>
+        <p>Project health snapshot with current status, priority, and recent activity.</p>
+      </header>
+
+      <section aria-label="Projects overview">
+        <div class="project-grid" id="project-grid" role="list"></div>
+      </section>
+    </main>
+
+    <script>
+      const grid = document.getElementById("project-grid");
+
+      const normalize = (value) =>
+        String(value || "")
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, "-");
+
+      const createCard = (project) => {
+        const statusClass = `status-${normalize(project.status)}`;
+        const priorityClass = `priority-${normalize(project.priority)}`;
+
+        const article = document.createElement("article");
+        article.className = "project-card";
+        article.setAttribute("role", "listitem");
+
+        article.innerHTML = `
+          <header class="project-card-header">
+            <h2 class="project-name">${project.name}</h2>
+            <p class="project-owner"><strong>Owner:</strong> ${project.owner}</p>
+          </header>
+          <div class="project-meta" aria-label="Project labels">
+            <span class="badge badge-status ${statusClass}"><strong>Status:</strong> ${project.status}</span>
+            <span class="badge badge-priority ${priorityClass}"><strong>Priority:</strong> ${project.priority}</span>
+          </div>
+          <p class="project-activity"><strong>Recent Activity:</strong> ${project.recentActivity}</p>
+        `;
+
+        return article;
+      };
+
+      const renderProjects = async () => {
+        try {
+          const response = await fetch("./project-data.json");
+          if (!response.ok) {
+            throw new Error(`Request failed: ${response.status}`);
+          }
+
+          const { projects } = await response.json();
+          if (!Array.isArray(projects) || projects.length === 0) {
+            grid.innerHTML = '<p role="status">No projects available.</p>';
+            return;
+          }
+
+          const fragment = document.createDocumentFragment();
+          projects.forEach((project) => {
+            fragment.appendChild(createCard(project));
+          });
+
+          grid.replaceChildren(fragment);
+        } catch (error) {
+          grid.innerHTML = '<p role="alert">Unable to load project data. Please try again later.</p>';
+          console.error(error);
+        }
+      };
+
+      renderProjects();
+    </script>
+  </body>
+</html>
